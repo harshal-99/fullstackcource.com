@@ -10,7 +10,11 @@ const App = () => {
 
 	const addName = (event) => {
 		event.preventDefault()
-		setPerson(person.concat({name: newName}))
+		if (person.find(name => name.name === newName)) {
+			alert(`${newName} already exists`)
+		} else {
+			setPerson(person.concat({name: newName}))
+		}
 		setNewName("")
 	}
 
