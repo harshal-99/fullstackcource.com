@@ -1,6 +1,11 @@
 const Names = (props) => {
 	return (
-		<li>{props.name} {props.number}</li>
+		<ul>
+			{props.person.map(per =>
+				<li key={per.id}>
+					{per.name} {per.number}
+				</li>)}
+		</ul>
 	)
 }
 
