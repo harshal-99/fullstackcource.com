@@ -42,7 +42,9 @@ const App = () => {
 
 	const handleSearchChange = (event) => {
 		setSearch(event.target.value)
-
+		setSearchResult(person.filter(per =>
+			per.name.toLowerCase()
+				.includes(search.toLowerCase())))
 	}
 
 	return (
@@ -53,7 +55,7 @@ const App = () => {
 				<div><input type="text" value={search}
 				            onChange={handleSearchChange}/></div>
 				<ul>
-					{searchResult.map(res => <li key={res}>{res}</li>)}
+					{searchResult.map(res => <li key={res.id}>{res.name}</li>)}
 				</ul>
 			</div>
 			<h3>Add a new</h3>
