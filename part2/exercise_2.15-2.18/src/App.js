@@ -72,7 +72,7 @@ const App = () => {
 			            newNumber={newNumber}
 			/>
 			<h2>Numbers</h2>
-			<Names person={person}/>
+			<Names person={person} deletePerson={utils.deletePerson}/>
 		</div>
 	)
 }
