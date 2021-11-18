@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import axios                   from "axios";
 
 import Names      from "./components/Names";
 import PersonForm from "./components/PersonForm";
+
+import utils from "./services/utils";
 
 const App = () => {
 	const [ person, setPerson ] = useState([])
@@ -12,9 +13,11 @@ const App = () => {
 	const [ searchResult, setSearchResult ] = useState([])
 
 	useEffect(() => {
-		axios
-			.get("http://localhost:3001/persons")
-			.then(res => setPerson(res.data))
+		utils
+			.getAll()
+			.then(initialPerson => {
+				setPerson(initialPerson)
+			})
 	}, [])
 
 	const addName = (event) => {
@@ -22,14 +25,14 @@ const App = () => {
 		if (person.find(name => name.name === newName)) {
 			alert(`${newName} already exists`)
 		} else {
-			axios
-				.post("http://localhost:3001/persons", {
+			utils
+				.create({
 					name: newName,
 					number: newNumber,
 					id: person.length + 1
 				})
-				.then(res => {
-					setPerson(person.concat(res.data))
+				.then(returnedPerson => {
+					setPerson(person.concat(returnedPerson))
 				})
 		}
 		setNewName("")
