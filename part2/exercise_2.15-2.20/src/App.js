@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import Names      from "./components/Names";
 import PersonForm from "./components/PersonForm";
 
-import utils from "./services/utils";
+import utils        from "./services/utils";
+import Notification from "./components/Notification";
 
 const App = () => {
 	const [ person, setPerson ] = useState([])
@@ -11,6 +12,7 @@ const App = () => {
 	const [ newNumber, setNewNumber ] = useState("")
 	const [ search, setSearch ] = useState("")
 	const [ searchResult, setSearchResult ] = useState([])
+	const [ successMessage, setSuccessMessage ] = useState(null)
 
 	useEffect(() => {
 		utils
@@ -18,7 +20,7 @@ const App = () => {
 			.then(initialPerson => {
 				setPerson(initialPerson)
 			})
-	}, [])
+	}, [person])
 
 	const addName = (event) => {
 		event.preventDefault()
@@ -41,6 +43,7 @@ const App = () => {
 							return newArray
 						})
 					})
+				setSuccessMessage(`Updated ${foundPerson.name}`)
 			}
 		} else {
 			utils
@@ -51,8 +54,13 @@ const App = () => {
 				})
 				.then(returnedPerson => {
 					setPerson(person.concat(returnedPerson))
+					setSuccessMessage(`Added ${returnedPerson.name}`)
 				})
+
 		}
+		setTimeout(() => {
+			setSuccessMessage(null)
+		}, 5000)
 		setNewName("")
 		setNewNumber("")
 	}
@@ -75,6 +83,7 @@ const App = () => {
 	return (
 		<div>
 			<h2>Phonebook</h2>
+			<Notification message={successMessage}/>
 			<div>
 				<div>filter shown with</div>
 				<div><input type="text" value={search}
@@ -90,7 +99,7 @@ const App = () => {
 			            newNumber={newNumber}
 			/>
 			<h2>Numbers</h2>
-			<Names person={person} deletePerson={utils.deletePerson}/>
+			<Names person={person} deletePerson={utils.deletePerson} setSuccessMessage={setSuccessMessage}/>
 		</div>
 	)
 }
