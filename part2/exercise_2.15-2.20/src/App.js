@@ -20,12 +20,14 @@ const App = () => {
 			.then(initialPerson => {
 				setPerson(initialPerson)
 			})
-	}, [person])
+	}, [])
+
 
 	const addName = (event) => {
 		event.preventDefault()
 		const foundPerson = person.find(name => name.name === newName)
 		if (foundPerson) {
+			let message = null
 			if (window.confirm(`${newName} already added to phonebook, replace old number with new one ?`)) {
 				utils
 					.updatePerson(foundPerson.id, {
@@ -43,7 +45,14 @@ const App = () => {
 							return newArray
 						})
 					})
-				setSuccessMessage(`Updated ${foundPerson.name}`)
+					.catch(error => {
+						if (error.response.status === 404) {
+							message = `${foundPerson.name} doesn't exists.`
+						}
+					})
+				setSuccessMessage(message
+					? message
+					: `Updated ${foundPerson.name}`)
 			}
 		} else {
 			utils
@@ -99,7 +108,8 @@ const App = () => {
 			            newNumber={newNumber}
 			/>
 			<h2>Numbers</h2>
-			<Names person={person} deletePerson={utils.deletePerson} setSuccessMessage={setSuccessMessage}/>
+			<Names person={person} deletePerson={utils.deletePerson}
+			       setSuccessMessage={setSuccessMessage}/>
 		</div>
 	)
 }
