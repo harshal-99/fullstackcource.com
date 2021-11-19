@@ -22,14 +22,32 @@ const App = () => {
 
 	const addName = (event) => {
 		event.preventDefault()
-		if (person.find(name => name.name === newName)) {
-			alert(`${newName} already exists`)
+		const foundPerson = person.find(name => name.name === newName)
+		if (foundPerson) {
+			if (window.confirm(`${newName} already added to phonebook, replace old number with new one ?`)) {
+				utils
+					.updatePerson(foundPerson.id, {
+						number: newNumber,
+						name: foundPerson.name
+					})
+					.then(returnedPerson => {
+						setPerson(prevState => {
+							const newArray = prevState.map(val => val)
+							for (let i = 0; i < newArray.length; i++) {
+								if (newArray[i].name === returnedPerson.name) {
+									newArray[i].number = returnedPerson.number
+								}
+							}
+							return newArray
+						})
+					})
+			}
 		} else {
 			utils
 				.create({
 					name: newName,
 					number: newNumber,
-					id: person.length + 1
+					id: Math.random() * 100
 				})
 				.then(returnedPerson => {
 					setPerson(person.concat(returnedPerson))
