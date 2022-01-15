@@ -46,6 +46,7 @@ const App = () => {
 						})
 					})
 					.catch(error => {
+						console.log(error)
 						if (error.response.status === 404) {
 							message = `${foundPerson.name} doesn't exists.`
 						}
@@ -65,6 +66,7 @@ const App = () => {
 					setPerson(person.concat(returnedPerson))
 					setSuccessMessage(`Added ${returnedPerson.name}`)
 				})
+				.catch(error => console.log(error))
 
 		}
 		setTimeout(() => {
