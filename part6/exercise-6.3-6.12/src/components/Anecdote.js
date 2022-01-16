@@ -15,11 +15,19 @@ const Anecdote = ({anecdote, handleClick}) => {
 
 const Anecdotes = () => {
 	const dispatch = useDispatch()
-	const anecdotes = useSelector(state => [...state.anecdote].sort((a, b) => b.votes - a.votes))
+	const anecdotes = useSelector(({filter, anecdote}) => {
+		if (filter === null) {
+			return anecdote
+		}
+		const regex = new RegExp(filter, 'i')
+		return anecdote.filter(anecdote => anecdote.content.match(regex))
+	})
+
+	const sortVotes = (a, b) => b.votes - a.votes
 
 	return (
 		<ul>
-			{anecdotes.map(anecdote =>
+			{anecdotes.sort(sortVotes).map(anecdote =>
 				<Anecdote
 					key={anecdote.id}
 					anecdote={anecdote}
