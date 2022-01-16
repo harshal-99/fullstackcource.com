@@ -28,16 +28,16 @@ export const updateVote = (id) => {
 	}
 }
 
-/*export const createdAnecdote = anecdote => {
+export const createdAnecdote = anecdote => {
 	return {
 		type: 'NEW_ANECDOTE',
 		data: {
-			content: anecdote,
-			id: getId(),
+			content: anecdote.content,
+			id: anecdote.id,
 			votes: 0
 		}
 	}
-}*/
+}
 
 export const initializeAnecdotes = (anecdotes) => {
 	return {
