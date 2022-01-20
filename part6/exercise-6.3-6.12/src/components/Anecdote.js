@@ -8,7 +8,7 @@ const Anecdote = ({anecdote, handleClick}) => {
 				{anecdote.content}
 			</div>
 			<div>has {anecdote.votes}</div>
-			<button onClick={() => handleClick(anecdote.id)}>vote</button>
+			<button onClick={() => handleClick(anecdote)}>vote</button>
 		</li>
 	)
 }
@@ -31,7 +31,7 @@ const Anecdotes = () => {
 				<Anecdote
 					key={anecdote.id}
 					anecdote={anecdote}
-					handleClick={() => dispatch(updateVote(anecdote.id))}
+					handleClick={() => dispatch(updateVote(anecdote))}
 				/>
 			)}
 		</ul>
