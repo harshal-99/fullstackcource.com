@@ -1,4 +1,5 @@
 import {ApolloServer, gql} from 'apollo-server'
+import {v4 as uuid} from 'uuid'
 
 let authors = [
 	{
@@ -100,6 +101,17 @@ const typeDefs = gql`
         allBooks(author: String, genre: String): [Book!]!
         allAuthors: [Author!]!
     }
+
+    type Mutation {
+        addBook(
+            title: String!
+            author: String!
+            published: Int!
+            genres: [String!]!
+        ): Book
+
+        editAuthor(name: String!, setBornTo: Int!): Author
+    }
 `
 
 const resolvers = {
@@ -124,8 +136,35 @@ const resolvers = {
 						author.bookCount++
 					}
 				})
-				return {name: author.name, bookCount: author.bookCount}
+				return author
 			})
+		}
+	},
+	Mutation: {
+		addBook: (root, args) => {
+			const book = {...args, id: uuid()}
+			const authorName = book.author
+			const author = authors.find(author => author.name === authorName)
+			if (!author) {
+				const newAuthor = {
+					name: authorName,
+					born: 0,
+					bookCount: 1,
+					id: uuid()
+				}
+				authors.push(newAuthor)
+			}
+			return book
+		},
+
+		editAuthor: (root, args) => {
+			const author = authors.find(author => author.name === args.name)
+			if(author) {
+				author.born = args.setBornTo
+				return author
+			} else {
+				return null
+			}
 		}
 	}
 }
