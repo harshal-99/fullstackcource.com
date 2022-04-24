@@ -84,7 +84,7 @@ const typeDefs = gql`
     type Author {
         name: String!
         id: ID!
-        born: String!
+        born: String
         bookCount: Int
     }
 
@@ -126,6 +126,9 @@ const resolvers = {
 			if (args.genre) {
 				result = result.concat(books.filter(book => book.genres.includes(args.genre)))
 			}
+			if (!args.author && !args.genre) {
+				result = books
+			}
 			return result
 		},
 		allAuthors: () => {
@@ -149,17 +152,17 @@ const resolvers = {
 				const newAuthor = {
 					name: authorName,
 					born: 0,
-					bookCount: 1,
 					id: uuid()
 				}
 				authors.push(newAuthor)
 			}
+			books = books.concat(book)
 			return book
 		},
 
 		editAuthor: (root, args) => {
 			const author = authors.find(author => author.name === args.name)
-			if(author) {
+			if (author) {
 				author.born = args.setBornTo
 				return author
 			} else {
