@@ -5,6 +5,7 @@ import Author from "./models/author.js";
 import Book from "./models/book.js";
 import dotenv from "dotenv"
 import User from "./models/user.js";
+import jwt from "jsonwebtoken"
 
 dotenv.config()
 
