@@ -1,5 +1,6 @@
 import {Router} from "express"
 import {Note, User} from "../models/index.js"
+import {Op} from "sequelize";
 import jwt from "jsonwebtoken";
 
 const noteRouter = Router()
@@ -24,12 +25,24 @@ const noteFinder = async (request, response, next) => {
 }
 
 noteRouter.get('/', async (request, response) => {
+	const where = {}
+
+	if (request.query.important) {
+		where.important = request.query.important === 'true'
+	}
+
+	if (request.query.search) {
+		where.content = {
+			[Op.substring]: request.query.search
+		}
+	}
 	const notes = await Note.findAll({
 		attributes: {exclude: ['userId']},
 		include: {
 			model: User,
 			attributes: ['name']
-		}
+		},
+		where
 	})
 	response.json(notes)
 })
