@@ -1,4 +1,4 @@
-import {Sequelize} from "sequelize/types/index.js";
+import {Sequelize} from "sequelize";
 import {DATABASE_URL} from "./config.js";
 
 export const sequelize = new Sequelize(DATABASE_URL)
