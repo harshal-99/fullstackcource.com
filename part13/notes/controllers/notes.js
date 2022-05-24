@@ -1,7 +1,22 @@
 import {Router} from "express"
-import {Note} from "../models/index.js"
+import {Note, User} from "../models/index.js"
+import jwt from "jsonwebtoken";
 
 const noteRouter = Router()
+
+const tokenExtractor = (req, res, next) => {
+	const authorization = req.get('authorization')
+	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+		try {
+			req.decodedToken = jwt.verify(authorization.substring(7), SECRET)
+		} catch {
+			res.status(401).json({error: 'token invalid'})
+		}
+	} else {
+		res.status(401).json({error: 'token missing'})
+	}
+	next()
+}
 
 const noteFinder = async (request, response, next) => {
 	request.note = await Note.findByPk(request.params.id)
@@ -9,13 +24,20 @@ const noteFinder = async (request, response, next) => {
 }
 
 noteRouter.get('/', async (request, response) => {
-	const notes = await Note.findAll()
+	const notes = await Note.findAll({
+		attributes: {exclude: ['userId']},
+		include: {
+			model: User,
+			attributes: ['name']
+		}
+	})
 	response.json(notes)
 })
 
-noteRouter.post('/', async (request, response) => {
+noteRouter.post('/', tokenExtractor, async (request, response) => {
 	try {
-		const note = await Note.create(request.body)
+		const user = await User.findByPk(request.decodedToken.id)
+		const note = await Note.create({...request.body, userId: user.id})
 		response.json(note)
 	} catch (error) {
 		return response.status(400).json({error})
