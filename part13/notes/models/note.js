@@ -1,4 +1,4 @@
-import {DataTypes, Model} from "sequelize/types/index.js";
+import {DataTypes, Model} from "sequelize";
 import {sequelize} from "../util/db.js";
 
 class Note extends Model {
@@ -27,7 +27,5 @@ Note.init({
 	timestamps: false,
 	modelName: 'note'
 })
-
-await Note.sync()
 
 export default Note
