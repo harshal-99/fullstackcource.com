@@ -1,5 +1,5 @@
 import {Router} from "express"
-import Note from "../models/note.js"
+import {Note} from "../models/index.js"
 
 const noteRouter = Router()
 
