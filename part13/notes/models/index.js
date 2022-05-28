@@ -7,5 +7,4 @@ Note.belongsTo(User)
 await User.sync({alter: true})
 await Note.sync({alter: true})
 
-
 export {User, Note}
