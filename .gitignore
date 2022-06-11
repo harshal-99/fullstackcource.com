@@ -3,3 +3,4 @@ part2-notes/
 node_modules
 .env
 .idea
+build
