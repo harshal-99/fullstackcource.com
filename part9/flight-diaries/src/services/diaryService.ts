@@ -1,13 +1,19 @@
-import diaries                              from '../../data/diaries'
-import {DiaryEntry, NonSensitiveDiaryEntry} from "../types";
+import diaries                                             from '../../data/diaries'
+import {DiaryEntry, NewDiaryEntry, NonSensitiveDiaryEntry} from "../types";
 
 
 export const getEntries = (): Array<DiaryEntry> => {
   return diaries
 }
 
-export const addDiary = () => {
-  return null
+export const addDiary = (entry: NewDiaryEntry): DiaryEntry => {
+  const newDiaryEntry = {
+    id: Math.max(...diaries.map(d => d.id)) + 1,
+    ...entry
+  }
+
+  diaries.push(newDiaryEntry)
+  return newDiaryEntry
 }
 
 export const getNonSensitiveEntries =
@@ -21,3 +27,7 @@ export const getNonSensitiveEntries =
           visibility
         }))
   }
+
+export const findById = (id: number): DiaryEntry | undefined => {
+  return diaries.find(d => d.id === id)
+}
