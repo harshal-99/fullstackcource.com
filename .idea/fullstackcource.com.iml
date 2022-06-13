@@ -5,6 +5,13 @@
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/part3/phonebook/build" />
+      <excludeFolder url="file://$MODULE_DIR$/part7/ultimate-hook/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/part7/webpack-part7/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/part8/library/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/part8/library-frontend/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/part9/flight-diaries/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
