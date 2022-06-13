@@ -6,6 +6,7 @@ type Fields = {
   ssn: unknown,
   gender: unknown,
   occupation: unknown
+  entries: unknown
 }
 
 const isString = (text: unknown): text is string => {
@@ -55,12 +56,23 @@ const parseOccupation = (occupation: unknown): string => {
   return occupation
 }
 
-export const toNewPatientEntry = ({name, dateOfBirth, ssn, gender, occupation}: Fields) => {
+const parseEntries = (entry: unknown): string[] => {
+  if (!Array.isArray(entry)) {
+    throw new Error('Incorrect or missing entries: ' + entry)
+  }
+  if (!entry.every(ent => isString(ent))) {
+    throw new Error('Incorrect or missing entries: ' + entry)
+  }
+  return entry
+}
+
+export const toNewPatientEntry = ({name, dateOfBirth, ssn, gender, occupation, entries}: Fields) => {
   return {
     name: parseName(name),
     dateOfBirth: parseDate(dateOfBirth),
     ssn: parseSSN(ssn),
     gender: parseGender(gender),
-    occupation: parseOccupation(occupation)
+    occupation: parseOccupation(occupation),
+    entries: parseEntries(entries)
   }
 }
