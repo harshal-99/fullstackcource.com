@@ -1,6 +1,6 @@
-import {Router}                                 from "express";
-import {addPatient, getNonSensitivePatientInfo} from "../services/patientsService";
-import {toNewPatientEntry}                      from "../utils";
+import {Router}                                                 from "express";
+import {addPatient, getNonSensitivePatientInfo, getPatientById} from "../services/patientsService";
+import {toNewPatientEntry}                                      from "../utils";
 
 const patientsRouter = Router()
 
@@ -21,6 +21,15 @@ patientsRouter.post('/', (request, response) => {
     }
     response.status(400).send(errorMessage)
   }
+})
+
+patientsRouter.get('/:id', (request, response) => {
+  const id = request.params.id.toString()
+  const patient = getPatientById(id)
+  if (patient) {
+    return response.json(patient)
+  }
+  return response.status(404).end()
 })
 
 export default patientsRouter
