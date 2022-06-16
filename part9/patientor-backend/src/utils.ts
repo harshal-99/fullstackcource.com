@@ -1,4 +1,4 @@
-import {Gender} from "./types";
+import {Entry, Gender} from "./types";
 
 type Fields = {
   name: unknown,
@@ -56,11 +56,12 @@ const parseOccupation = (occupation: unknown): string => {
   return occupation
 }
 
+const isEntry = (entry: unknown): boolean => {
+  return !!entry;
+}
+
 const parseEntries = (entry: unknown): string[] => {
-  if (!Array.isArray(entry)) {
-    throw new Error('Incorrect or missing entries: ' + entry)
-  }
-  if (!entry.every(ent => isString(ent))) {
+  if (!Array.isArray(entry) || !isEntry(entry)) {
     throw new Error('Incorrect or missing entries: ' + entry)
   }
   return entry
@@ -73,6 +74,7 @@ export const toNewPatientEntry = ({name, dateOfBirth, ssn, gender, occupation, e
     ssn: parseSSN(ssn),
     gender: parseGender(gender),
     occupation: parseOccupation(occupation),
-    entries: parseEntries(entries)
+    // @ts-ignore
+    entries: parseEntries(entries) as Entry[]
   }
 }
